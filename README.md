@@ -11,10 +11,10 @@
 An end-to-end, production-grade **E-Commerce Web Application** and flagship **Quality Assurance (QA) & SDET Testing Portfolio**. 
 
 Built with **Java 17**, **Spring Boot 3.3.5**, **Spring Security**, and **MySQL**, designed for deployment on **Hostinger VPS**, and verified through **all 4 tiers of software testing**:
-1. 🧪 **Unit Testing:** Isolated domain & calculation verification with **JUnit 5** and **Mockito**.
-2. 🔄 **Integration Testing:** Full-stack REST API and database transaction testing with **Spring Boot Test** and **MockMvc**.
-3. 🎭 **End-to-End (E2E) Automation:** Browser test suites with **Playwright & TypeScript** using the **Page Object Model (POM)**.
-4. 📋 **Manual QA Artifacts:** Professional IEEE 829 Test Plan, Requirements Traceability Matrix (RTM), and Jira-style Defect reports.
+1.  **Unit Testing:** Isolated domain & calculation verification with **JUnit 5** and **Mockito**.
+2.  **Integration Testing:** Full-stack REST API and database transaction testing with **Spring Boot Test** and **MockMvc**.
+3.  **End-to-End (E2E) Automation:** Browser test suites with **Playwright & TypeScript** using the **Page Object Model (POM)**.
+4.  **Manual QA Artifacts:** Professional IEEE 829 Test Plan, Requirements Traceability Matrix (RTM), and Jira-style Defect reports.
 
 ---
 
@@ -28,7 +28,7 @@ Built with **Java 17**, **Spring Boot 3.3.5**, **Spring Security**, and **MySQL*
 
 ---
 
-## 🗄️ Database Architecture & Entity Relationships
+##  Database Architecture & Entity Relationships
 
 The application uses a normalized MySQL database structure:
 
