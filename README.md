@@ -129,4 +129,4 @@ The application is pre-configured for production on **Hostinger Linux VPS** with
 
 * **QA & SDET Engineer:** Samir Boussada
 * **GitHub Profile:** [@samir-boussada](https://github.com/samir-boussada)
-* **LinkedIn:** [Your LinkedIn URL]
+* **LinkedIn:** [(Https://www.linkedin.com/in/samir-boussada-5bba06113)]
