@@ -1,4 +1,4 @@
-# ⚡ NovaShop — Enterprise E-Commerce Platform & Full-Stack Testing Portfolio
+# NovaShop — Enterprise E-Commerce Platform & Full-Stack Testing Portfolio
 
 ![Java](https://img.shields.io/badge/Java-17%20LTS-orange?logo=openjdk)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.3.5-brightgreen?logo=springboot)
@@ -18,7 +18,7 @@ Built with **Java 17**, **Spring Boot 3.3.5**, **Spring Security**, and **MySQL*
 
 ---
 
-## 🌟 Key Application Features
+##  Key Application Features
 
 * **Storefront Catalog:** Product browsing, category filtering (Audio, Electronics, Wearables, Furniture), and real-time search.
 * **Smart Shopping Cart:** Interactive slide-out cart drawer, dynamic subtotal calculations, free shipping over $100, and promo code discounts (`SAVE10`, `NOVA20`).
@@ -68,7 +68,7 @@ Built with **Java 17**, **Spring Boot 3.3.5**, **Spring Security**, and **MySQL*
 
 ---
 
-## 🚀 Quick Start (Run Locally)
+## Quick Start (Run Locally)
 
 ### Prerequisites
 * **Java 17+**
@@ -115,7 +115,7 @@ npx playwright show-report
 
 ---
 
-## 🌐 Hostinger VPS Deployment
+##  Hostinger VPS Deployment
 
 The application is pre-configured for production on **Hostinger Linux VPS** with MySQL, Systemd, and Nginx.
 
