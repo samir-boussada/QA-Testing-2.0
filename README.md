@@ -28,6 +28,57 @@ Built with **Java 17**, **Spring Boot 3.3.5**, **Spring Security**, and **MySQL*
 
 ---
 
+## 🗄️ Database Architecture & Entity Relationships
+
+The application uses a normalized MySQL database structure:
+
+```mermaid
+erDiagram
+    USERS {
+        bigint id PK
+        string full_name
+        string email UK
+        string password
+        enum role "ROLE_CUSTOMER | ROLE_ADMIN"
+        timestamp created_at
+    }
+
+    PRODUCTS {
+        bigint id PK
+        string name
+        string description
+        decimal price
+        string category
+        string image_url
+        int stock_quantity
+    }
+
+    ORDERS {
+        bigint id PK
+        string order_number UK
+        bigint user_id FK
+        decimal total_amount
+        enum status "PENDING | CONFIRMED | SHIPPED"
+        string shipping_address
+        string contact_phone
+        timestamp order_date
+    }
+
+    ORDER_ITEMS {
+        bigint id PK
+        bigint order_id FK
+        bigint product_id FK
+        int quantity
+        decimal unit_price
+    }
+
+    USERS ||--o{ ORDERS : "places"
+    ORDERS ||--|{ ORDER_ITEMS : "contains"
+    PRODUCTS ||--o{ ORDER_ITEMS : "ordered in"
+```
+
+---
+
 ##  The 4 Levels of Testing
 
 ```text
