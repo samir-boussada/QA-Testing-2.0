@@ -28,7 +28,7 @@ Built with **Java 17**, **Spring Boot 3.3.5**, **Spring Security**, and **MySQL*
 
 ---
 
-## 🏗️ The 4 Levels of Testing
+##  The 4 Levels of Testing
 
 ```text
        /\
