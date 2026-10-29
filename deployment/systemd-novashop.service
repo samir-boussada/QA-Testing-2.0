@@ -1,0 +1,17 @@
+[Unit]
+Description=NovaShop E-Commerce Service
+After=syslog.target network.target mysql.service
+
+[Service]
+User=root
+WorkingDirectory=/opt/novashop
+ExecStart=/usr/bin/java -Xms256m -Xmx512m -jar /opt/novashop/novashop.jar --spring.profiles.active=prod
+SuccessExitStatus=143
+Restart=always
+RestartSec=10
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=novashop
+
+[Install]
+WantedBy=multi-user.target

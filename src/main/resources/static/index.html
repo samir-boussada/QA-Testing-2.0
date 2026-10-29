@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NovaShop — Next-Gen Tech & Electronics</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="/" class="brand">
+                <span>⚡ NovaShop</span>
+            </a>
+
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Search headphones, keyboards, monitors..." oninput="handleSearch(event)">
+            </div>
+
+            <div class="nav-actions">
+                <div id="auth-nav-container">
+                    <!-- Populated by JavaScript -->
+                </div>
+
+                <button class="cart-btn" id="cart-drawer-toggle" onclick="openCart()">
+                    <span>🛒 Cart</span>
+                    <span class="cart-badge" id="cart-badge-count">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <section class="hero">
+        <h1>Next-Gen Tech & Accessories</h1>
+        <p>Curated high-performance electronics engineered for creators, gamers, and productivity power users.</p>
+        <div class="promo-pill">
+            🔥 Use code <strong>SAVE10</strong> for 10% off, or <strong>NOVA20</strong> for 20% off! Free delivery on orders over $100.
+        </div>
+    </section>
+
+    <!-- Category Filter Bar -->
+    <section class="category-bar">
+        <button class="cat-chip active" onclick="filterCategory('ALL', this)">All Products</button>
+        <button class="cat-chip" onclick="filterCategory('Audio', this)">🎧 Audio</button>
+        <button class="cat-chip" onclick="filterCategory('Electronics', this)">💻 Electronics</button>
+        <button class="cat-chip" onclick="filterCategory('Wearables', this)">⌚ Wearables</button>
+        <button class="cat-chip" onclick="filterCategory('Furniture', this)">🪑 Furniture</button>
+    </section>
+
+    <!-- Product Catalog Grid -->
+    <main class="products-section">
+        <div class="products-grid" id="products-grid">
+            <!-- Rendered by JS -->
+        </div>
+    </main>
+
+    <!-- Slide-out Cart Drawer -->
+    <div class="cart-overlay" id="cart-overlay" onclick="closeCart()"></div>
+    <aside class="cart-drawer" id="cart-drawer">
+        <div class="cart-header">
+            <h3>Your Shopping Cart</h3>
+            <button onclick="closeCart()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+        </div>
+
+        <div class="cart-items-container" id="cart-items-container">
+            <!-- Dynamic Cart Items -->
+        </div>
+
+        <div class="cart-footer">
+            <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                <input type="text" id="promo-code-input" placeholder="Promo code (SAVE10)" style="flex: 1; padding: 0.5rem 0.8rem; border: 1px solid var(--border); border-radius: 8px;">
+                <button onclick="applyPromo()" class="btn btn-outline" style="padding: 0.5rem 1rem;">Apply</button>
+            </div>
+
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <span id="cart-subtotal">$0.00</span>
+            </div>
+            <div class="summary-row">
+                <span>Discount</span>
+                <span id="cart-discount" style="color: var(--success);">-$0.00</span>
+            </div>
+            <div class="summary-row">
+                <span>Estimated Shipping</span>
+                <span id="cart-shipping">$0.00</span>
+            </div>
+            <div class="summary-row total">
+                <span>Total</span>
+                <span id="cart-total">$0.00</span>
+            </div>
+
+            <button class="btn btn-primary" id="checkout-drawer-btn" style="width: 100%; margin-top: 1rem; padding: 0.8rem;" onclick="startCheckout()">
+                Proceed to Checkout ➔
+            </button>
+        </div>
+    </aside>
+
+    <!-- Modal: Login -->
+    <div class="modal-overlay" id="login-modal">
+        <div class="modal-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2>Customer Sign In</h2>
+                <button onclick="closeModal('login-modal')" style="background: none; border: none; font-size: 1.4rem; cursor: pointer;">&times;</button>
+            </div>
+            <div class="alert-box alert-danger" id="login-error"></div>
+            <form id="login-form" onsubmit="submitLogin(event)">
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="login-email" required placeholder="you@example.com">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="login-password" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">Sign In</button>
+            </form>
+            <div style="margin-top: 1.25rem; font-size: 0.85rem; text-align: center; color: var(--text-muted);">
+                Test Credentials: <br>
+                Customer: <code>customer@novashop.com</code> / <code>CustomerPass123!</code><br>
+                Admin: <code>admin@novashop.com</code> / <code>AdminPass123!</code>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Register -->
+    <div class="modal-overlay" id="register-modal">
+        <div class="modal-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2>Create Account</h2>
+                <button onclick="closeModal('register-modal')" style="background: none; border: none; font-size: 1.4rem; cursor: pointer;">&times;</button>
+            </div>
+            <div class="alert-box alert-danger" id="reg-error"></div>
+            <form id="register-form" onsubmit="submitRegister(event)">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="reg-name" required placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="reg-email" required placeholder="john@example.com">
+                </div>
+                <div class="form-group">
+                    <label>Password (min 6 characters)</label>
+                    <input type="password" id="reg-password" required minlength="6" placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">Create Account</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Checkout -->
+    <div class="modal-overlay" id="checkout-modal">
+        <div class="modal-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2>Complete Your Order</h2>
+                <button onclick="closeModal('checkout-modal')" style="background: none; border: none; font-size: 1.4rem; cursor: pointer;">&times;</button>
+            </div>
+            <form id="checkout-form" onsubmit="submitOrder(event)">
+                <div class="form-group">
+                    <label>Shipping Address</label>
+                    <textarea id="checkout-address" rows="3" required placeholder="123 Avenue des Champs, Apartment 4B, Paris, France"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Contact Phone (Digits only)</label>
+                    <input type="tel" id="checkout-phone" required placeholder="+33612345678" pattern="^\+?[0-9]{8,18}$">
+                </div>
+                <button type="submit" class="btn btn-primary" id="confirm-order-btn" style="width: 100%; margin-top: 0.5rem; padding: 0.8rem;">
+                    Confirm & Place Order
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Confirmation -->
+    <div class="modal-overlay" id="confirmation-modal">
+        <div class="modal-card" style="text-align: center;">
+            <div style="font-size: 3rem; margin-bottom: 0.5rem;">🎉</div>
+            <h2 style="color: var(--success); margin-bottom: 0.5rem;">Order Confirmed!</h2>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">Thank you for your purchase. We have received your order.</p>
+
+            <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; text-align: left; margin-bottom: 1.5rem; font-size: 0.9rem;">
+                <div style="margin-bottom: 0.5rem;"><strong>Order Reference:</strong> <span id="conf-order-id" style="color: var(--primary); font-weight: bold;"></span></div>
+                <div style="margin-bottom: 0.5rem;"><strong>Total Paid:</strong> <span id="conf-order-total"></span></div>
+                <div><strong>Shipped To:</strong> <span id="conf-order-address"></span></div>
+            </div>
+
+            <button class="btn btn-primary" onclick="closeModal('confirmation-modal')" style="width: 100%;">
+                Continue Shopping
+            </button>
+        </div>
+    </div>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>

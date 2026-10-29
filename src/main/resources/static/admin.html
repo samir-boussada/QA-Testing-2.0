@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NovaShop Admin Portal — Management Dashboard</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .admin-container { max-width: 1200px; margin: 2rem auto; padding: 0 1.5rem; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem; }
+        .stat-card { background: #fff; padding: 1.5rem; border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); }
+        .stat-val { font-size: 2rem; font-weight: 800; color: var(--primary); margin-top: 0.5rem; }
+        .table-card { background: #fff; border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); padding: 1.5rem; margin-bottom: 2rem; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; }
+        th, td { padding: 0.8rem 1rem; border-bottom: 1px solid var(--border); }
+        th { background: #f8fafc; font-weight: 700; color: var(--text-muted); }
+    </style>
+</head>
+<body style="background: #f1f5f9;">
+
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="/" class="brand">⚡ NovaShop <span style="font-size: 0.9rem; background: #e0e7ff; padding: 0.2rem 0.6rem; border-radius: 6px;">Admin</span></a>
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <a href="/" class="btn btn-outline">Back to Storefront</a>
+                <button onclick="handleLogout()" class="btn btn-outline">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="admin-container">
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div style="color: var(--text-muted); font-weight: 600;">Total Revenue</div>
+                <div class="stat-val" id="stat-revenue">$0.00</div>
+            </div>
+            <div class="stat-card">
+                <div style="color: var(--text-muted); font-weight: 600;">Total Orders Placed</div>
+                <div class="stat-val" id="stat-orders">0</div>
+            </div>
+            <div class="stat-card">
+                <div style="color: var(--text-muted); font-weight: 600;">Active Inventory Items</div>
+                <div class="stat-val" id="stat-products">0</div>
+            </div>
+        </div>
+
+        <!-- Inventory Management -->
+        <div class="table-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+                <h2>📦 Product Inventory</h2>
+                <button class="btn btn-primary" onclick="openModal('add-product-modal')">+ Add New Product</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Product</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="admin-products-table">
+                    <tr><td colspan="6" style="text-align: center;">Loading inventory...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Orders Table -->
+        <div class="table-card">
+            <h2 style="margin-bottom: 1.25rem;">📑 Recent Customer Orders</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order #</th>
+                        <th>Customer</th>
+                        <th>Date</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Shipping Address</th>
+                    </tr>
+                </thead>
+                <tbody id="admin-orders-table">
+                    <tr><td colspan="6" style="text-align: center;">Loading orders...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal: Add Product -->
+    <div class="modal-overlay" id="add-product-modal">
+        <div class="modal-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2>Add Product to Catalog</h2>
+                <button onclick="closeModal('add-product-modal')" style="background: none; border: none; font-size: 1.4rem; cursor: pointer;">&times;</button>
+            </div>
+            <form id="add-product-form" onsubmit="createProduct(event)">
+                <div class="form-group">
+                    <label>Product Name</label>
+                    <input type="text" id="prod-name" required placeholder="Nova Pro Wireless Mouse">
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="prod-desc" rows="2" required placeholder="Features, specs, and highlights"></textarea>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label>Price ($)</label>
+                        <input type="number" id="prod-price" step="0.01" min="0.01" required placeholder="79.99">
+                    </div>
+                    <div class="form-group">
+                        <label>Stock Quantity</label>
+                        <input type="number" id="prod-stock" min="0" required placeholder="50">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="prod-category" required>
+                        <option value="Electronics">Electronics</option>
+                        <option value="Audio">Audio</option>
+                        <option value="Wearables">Wearables</option>
+                        <option value="Furniture">Furniture</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Image URL</label>
+                    <input type="url" id="prod-image" placeholder="https://images.unsplash.com/...">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">Publish Product</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadAdminData();
+        });
+
+        async function loadAdminData() {
+            // Check auth
+            const authRes = await fetch('/api/auth/me');
+            if (!authRes.ok) {
+                alert('Admin authorization required. Please login as admin@novashop.com');
+                window.location.href = '/index.html';
+                return;
+            }
+            const user = await authRes.json();
+            if (user.role !== 'ROLE_ADMIN') {
+                alert('Access denied. Administrator privileges required.');
+                window.location.href = '/index.html';
+                return;
+            }
+
+            // Stats
+            const statsRes = await fetch('/api/admin/stats');
+            if (statsRes.ok) {
+                const stats = await statsRes.json();
+                document.getElementById('stat-revenue').textContent = `$${stats.totalRevenue.toFixed(2)}`;
+                document.getElementById('stat-orders').textContent = stats.totalOrders;
+                document.getElementById('stat-products').textContent = stats.totalProducts;
+            }
+
+            // Products
+            const prodsRes = await fetch('/api/products');
+            const products = await prodsRes.json();
+            document.getElementById('admin-products-table').innerHTML = products.map(p => `
+                <tr>
+                    <td>#${p.id}</td>
+                    <td><strong>${p.name}</strong></td>
+                    <td>${p.category}</td>
+                    <td>$${p.price.toFixed(2)}</td>
+                    <td><span style="font-weight: 700; color: ${p.stockQuantity > 5 ? 'var(--success)' : 'var(--danger)'}">${p.stockQuantity}</span></td>
+                    <td>
+                        <button onclick="deleteProduct(${p.id})" style="color: var(--danger); background: none; border: none; cursor: pointer; font-weight: 600;">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+
+            // Orders
+            const ordersRes = await fetch('/api/admin/orders');
+            if (ordersRes.ok) {
+                const orders = await ordersRes.json();
+                document.getElementById('admin-orders-table').innerHTML = orders.length === 0 
+                    ? '<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">No orders recorded yet.</td></tr>'
+                    : orders.map(o => `
+                        <tr>
+                            <td><strong>${o.orderNumber}</strong></td>
+                            <td>${o.user ? o.user.email : 'Guest'}</td>
+                            <td>${new Date(o.orderDate).toLocaleDateString()}</td>
+                            <td>$${o.totalAmount.toFixed(2)}</td>
+                            <td><span style="background: #dcfce7; color: #166534; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.8rem; font-weight: bold;">${o.status}</span></td>
+                            <td>${o.shippingAddress}</td>
+                        </tr>
+                    `).join('');
+            }
+        }
+
+        async function createProduct(e) {
+            e.preventDefault();
+            const product = {
+                name: document.getElementById('prod-name').value,
+                description: document.getElementById('prod-desc').value,
+                price: parseFloat(document.getElementById('prod-price').value),
+                stockQuantity: parseInt(document.getElementById('prod-stock').value),
+                category: document.getElementById('prod-category').value,
+                imageUrl: document.getElementById('prod-image').value || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500'
+            };
+
+            const res = await fetch('/api/admin/products', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(product)
+            });
+
+            if (res.ok) {
+                closeModal('add-product-modal');
+                loadAdminData();
+            } else {
+                alert('Failed to create product');
+            }
+        }
+
+        async function deleteProduct(id) {
+            if (!confirm('Are you sure you want to delete this product?')) return;
+            const res = await fetch(`/api/admin/products/${id}`, { method: 'DELETE' });
+            if (res.ok) loadAdminData();
+            else alert('Failed to delete product');
+        }
+
+        function openModal(id) { document.getElementById(id).classList.add('open'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+        async function handleLogout() {
+            await fetch('/api/auth/logout', { method: 'POST' });
+            window.location.href = '/index.html';
+        }
+    </script>
+</body>
+</html>
